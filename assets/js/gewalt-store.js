@@ -1,5 +1,5 @@
 (function(){
-  var PRODUCT_KEY='gewalt_products_v2';
+  var PRODUCT_KEY='gewalt_products_v4';
   var ORDER_KEY='gewalt_current_order_v1';
   var FAVORITES_KEY='gewalt_favorites_v1';
   var WA_NUMBER='18290000000';
@@ -9,7 +9,12 @@
     {id:'gewalt-max',name:'Gewalt- Max',slug:'gewalt-max',price:34,currency:'USD',color:'Blanco',category:'Hoodies',image:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85',description:'Hoodie blanco con diseño gráfico GEWALT en espalda. Estilo urbano, cómodo y de edición limitada.',active:true,featured:true,sizes:{S:3,M:8,L:5,XL:2}},
     {id:'gewalt-max-one',name:'Gewalt- Max-One',slug:'gewalt-max-one',price:34,currency:'USD',color:'Verde oscuro',category:'Hoodies',image:'https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=900&q=85',description:'Hoodie verde oscuro con collage visual y mensaje en espalda. Diseño urbano premium para uso diario.',active:true,featured:true,sizes:{S:4,M:6,L:4,XL:0}},
     {id:'gewalt-max-two',name:'Gewalt- Max two',slug:'gewalt-max-two',price:34,currency:'USD',color:'Crema',category:'Hoodies',image:'https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=900&q=85',description:'Hoodie crema con ilustración central. Perfecto para un look casual con identidad GEWALT.',active:true,featured:true,sizes:{S:2,M:7,L:3,XL:1}},
-    {id:'gewalt-urban-black',name:'Gewalt- Urban Black',slug:'gewalt-urban-black',price:39,currency:'USD',color:'Negro',category:'Hoodies',image:'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85',description:'Hoodie negro de corte urbano con presencia fuerte. Ideal para combinar con denim o cargo pants.',active:true,featured:false,sizes:{S:5,M:5,L:2,XL:1}}
+    {id:'gewalt-urban-black',name:'Gewalt- Urban Black',slug:'gewalt-urban-black',price:39,currency:'USD',color:'Negro',category:'Hoodies',image:'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85',description:'Hoodie negro de corte urbano con presencia fuerte. Ideal para combinar con denim o cargo pants.',active:true,featured:false,sizes:{S:5,M:5,L:2,XL:1}},
+    {id:'gewalt-tee-white',name:'Gewalt- Tee White',slug:'gewalt-tee-white',price:24,currency:'USD',color:'Blanco',category:'T-Shirts',image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85',description:'T-shirt blanco corte oversize con logo GEWALT serigrafiado en pecho. Algodón 100% premium.',active:true,featured:true,sizes:{S:6,M:10,L:8,XL:4}},
+    {id:'gewalt-tee-black',name:'Gewalt- Tee Black',slug:'gewalt-tee-black',price:24,currency:'USD',color:'Negro',category:'T-Shirts',image:'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=900&q=85',description:'T-shirt negro urbano con gráfico en espalda. Peso medio, corte relajado.',active:true,featured:true,sizes:{S:5,M:7,L:6,XL:3}},
+    {id:'gewalt-tee-green',name:'Gewalt- Tee Green',slug:'gewalt-tee-green',price:26,currency:'USD',color:'Verde',category:'T-Shirts',image:'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85',description:'T-shirt verde GEWALT edición limitada. Estampado completo en espalda.',active:true,featured:false,sizes:{S:3,M:5,L:4,XL:2}},
+    {id:'gewalt-ls-cream',name:'Gewalt- Long Sleeve Cream',slug:'gewalt-ls-cream',price:32,currency:'USD',color:'Crema',category:'Long Sleeves',image:'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=900&q=85',description:'Long sleeve crema con puños reforzados. Ideal para entretiempo.',active:true,featured:true,sizes:{S:4,M:6,L:5,XL:2}},
+    {id:'gewalt-ls-black',name:'Gewalt- Long Sleeve Black',slug:'gewalt-ls-black',price:34,currency:'USD',color:'Negro',category:'Long Sleeves',image:'https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=900&q=85',description:'Long sleeve negro con logo bordado en manga. Corte oversize.',active:true,featured:true,sizes:{S:3,M:5,L:4,XL:1}}
   ];
 
   function readJson(key,fallback){try{var raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback;}catch(e){return fallback;}}
@@ -29,8 +34,14 @@
   function renderShop(){
     var catalog=document.querySelector('.inner-catalog');
     if(!catalog)return;
-    var products=activeProducts();
     var panel=document.querySelector('.shop-panel__text');
+    var catFilter=new URLSearchParams(window.location.search).get('cat');
+    var products=activeProducts();
+    if(catFilter){
+      var map={'tshirts':'T-Shirts','hoodies':'Hoodies','longsleeves':'Long Sleeves'};
+      var label=map[catFilter]||catFilter;
+      products=products.filter(function(p){return p.category===label;});
+    }
     if(panel)panel.innerHTML='Hay <b>'+products.length+'</b> productos GEWALT disponibles';
     catalog.innerHTML='';
     if(!products.length){catalog.innerHTML='<div class="gewalt-empty">No hay productos activos. Crea o activa productos desde admin.html.</div>';return;}
