@@ -292,6 +292,125 @@
   .gg-hero__actions .gg-btn { text-align: center; }
 }
 
+/* ---------- HEADER ICONS ----------------------------------------- */
+.gg-headerActions { display: flex; align-items: center; gap: 20px; }
+.gg-headerIcon {
+  position: relative;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gg-white);
+  border-radius: 50%;
+  transition: background .25s var(--gg-easing);
+}
+.gg-header.scrolled .gg-headerIcon { color: var(--gg-brown); }
+.gg-headerIcon:hover { background: rgba(255,255,255,0.08); }
+.gg-header.scrolled .gg-headerIcon:hover { background: rgba(72,41,34,0.06); }
+.gg-headerIcon__badge {
+  position: absolute; top: 6px; right: 6px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--gg-green); color: #fff;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ---------- CAROUSEL --------------------------------------------- */
+.gg-carouselHead { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--gg-space-lg); }
+.gg-carouselHead h2 { margin: 0; font-family: 'Inter', sans-serif; font-size: 35px; font-weight: 700; letter-spacing: -2.625px; line-height: 1.1; }
+.gg-carouselNav { display: flex; gap: 8px; }
+.gg-carouselBtn {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid rgba(72,41,34,0.15);
+  background: var(--gg-white); color: var(--gg-brown);
+  font-size: 18px; font-weight: 400;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .25s var(--gg-easing);
+}
+.gg-carouselBtn:hover { background: var(--gg-brown); color: var(--gg-white); border-color: var(--gg-brown); }
+.gg-carousel {
+  display: flex; gap: 2px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+}
+.gg-carousel::-webkit-scrollbar { display: none; }
+.gg-product--card { flex: 0 0 280px; scroll-snap-align: start; }
+.gg-product__wish {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--gg-brown);
+  backdrop-filter: blur(6px);
+  transition: all .25s var(--gg-easing);
+}
+.gg-product__wish:hover { background: var(--gg-green); color: #fff; transform: scale(1.08); }
+.gg-product__wish.is-active { background: var(--gg-green); color: #fff; }
+
+/* ---------- LOOKBOOK --------------------------------------------- */
+.gg-lookbook { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2px; max-width: 1320px; margin: 0 auto; }
+.gg-lookbook__main { position: relative; aspect-ratio: 3/4; overflow: hidden; }
+.gg-lookbook__side { display: grid; grid-template-rows: 1fr 1fr; gap: 2px; }
+.gg-lookbook__img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .8s var(--gg-easing); }
+.gg-lookbook__main:hover .gg-lookbook__img,
+.gg-lookbook__side div:hover .gg-lookbook__img { transform: scale(1.03); }
+.gg-lookbook__tag {
+  position: absolute; top: 20px; left: 20px;
+  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gg-white);
+  background: rgba(72,41,34,0.55);
+  padding: 6px 12px; border-radius: 2px;
+  backdrop-filter: blur(4px);
+}
+.gg-lookbook__side div { position: relative; overflow: hidden; }
+
+/* ---------- COLLECTION BANNERS ----------------------------------- */
+.gg-bannersGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+.gg-banner { position: relative; aspect-ratio: 3/2; overflow: hidden; display: block; }
+.gg-banner__img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .8s var(--gg-easing); }
+.gg-banner:hover .gg-banner__img { transform: scale(1.04); }
+.gg-banner__content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: var(--gg-space-md);
+  background: linear-gradient(to top, rgba(72,41,34,0.65) 0%, transparent 60%);
+}
+.gg-banner__content h3 { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 600; color: var(--gg-white); margin: 6px 0; letter-spacing: -0.02em; }
+.gg-banner__link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--gg-white);
+  border-bottom: 1px solid var(--gg-white); padding-bottom: 2px; align-self: flex-start;
+  transition: color .25s var(--gg-easing), border-color .25s var(--gg-easing);
+}
+.gg-banner:hover .gg-banner__link { color: var(--gg-green-light); border-color: var(--gg-green-light); }
+
+/* ---------- NEWSLETTER ------------------------------------------- */
+.gg-newsletter {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--gg-space-lg);
+  align-items: center;
+  padding: var(--gg-space-lg);
+  background: var(--gg-gray-light);
+  border-radius: 2px;
+}
+.gg-newsletter__content h2 { font-family: 'Inter', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -2px; line-height: 1.1; margin: 0 0 12px; }
+.gg-newsletter__content p { font-size: 15px; color: var(--gg-gray); line-height: 1.6; margin: 0; letter-spacing: -0.01em; }
+.gg-newsletter__form { display: flex; gap: 8px; }
+.gg-newsletter__input {
+  flex: 1; min-height: 52px;
+  padding: 14px 18px;
+  border: 1.5px solid rgba(72,41,34,0.15);
+  background: var(--gg-white);
+  font-family: 'Inter', sans-serif; font-size: 13px; color: var(--gg-brown);
+  letter-spacing: -0.01em;
+  border-radius: 2px;
+  transition: border-color .25s var(--gg-easing);
+}
+.gg-newsletter__input:focus { outline: none; border-color: var(--gg-green); }
+.gg-newsletter__input::placeholder { color: rgba(72,41,34,0.4); }
+
 /* MOTION REDUCE */
 @media (prefers-reduced-motion: reduce) {
   .gg-reveal { transition: none; transform: none; opacity: 1; }
