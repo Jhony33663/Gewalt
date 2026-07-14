@@ -116,10 +116,12 @@
   z-index: 99;
   display: flex; align-items: center; justify-content: space-between;
   padding: 24px var(--gg-space-md);
+  background: rgba(10,10,10,0.35);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   transition: background-color .4s var(--gg-easing), padding .4s var(--gg-easing), backdrop-filter .4s var(--gg-easing);
 }
 .gg-header.scrolled {
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.94);
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   padding: 16px var(--gg-space-md);
   box-shadow: 0 1px 0 rgba(10,10,10,0.06);
