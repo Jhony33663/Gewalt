@@ -1,0 +1,25 @@
+services:
+  db:
+    ports: !override []
+
+  cache:
+    ports: !override []
+
+  saleor:
+    ports: !override
+      - "8001:8000"
+    environment:
+      ALLOWED_GRAPHQL_ORIGINS: "http://localhost:9001,http://127.0.0.1:9001,http://localhost:3001,http://127.0.0.1:3001"
+      DASHBOARD_URL: "http://localhost:9001/"
+
+  dashboard:
+    ports: !override
+      - "9001:80"
+    environment:
+      API_URL: "http://127.0.0.1:8001/graphql/"
+      LOCALE_CODE: "es"
+
+  mailpit:
+    ports: !override
+      - "1026:1025"
+      - "8026:8025"
