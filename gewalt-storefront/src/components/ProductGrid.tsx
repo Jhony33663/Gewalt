@@ -10,7 +10,9 @@ interface Product {
   thumbnail?: { url: string; alt: string } | null;
   pricing?: {
     priceRange?: {
-      gross?: { amount: number; currency: string };
+      start?: {
+        gross?: { amount: number; currency: string };
+      };
     };
   };
 }
@@ -51,8 +53,8 @@ export default function ProductGrid({ products }: ProductGridProps) {
             slug={product.slug}
             thumbnail={product.thumbnail?.url}
             thumbnailAlt={product.thumbnail?.alt}
-            price={product.pricing?.priceRange?.gross?.amount}
-            currency={product.pricing?.priceRange?.gross?.currency === 'USD' ? '$' : undefined}
+            price={product.pricing?.priceRange?.start?.gross?.amount}
+            currency={product.pricing?.priceRange?.start?.gross?.currency === 'USD' ? '$' : undefined}
           />
         </motion.div>
       ))}

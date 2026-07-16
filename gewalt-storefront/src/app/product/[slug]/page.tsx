@@ -56,8 +56,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   );
   const sizes = sizeAttribute?.values?.map((v: any) => v.name) || [];
 
-  const basePrice = product.pricing?.priceRange?.gross?.amount;
-  const currency = product.pricing?.priceRange?.gross?.currency || 'USD';
+  const basePrice = product.pricing?.priceRange?.start?.gross?.amount;
+  const currency = product.pricing?.priceRange?.start?.gross?.currency || 'USD';
   const currencySymbol = currency === 'USD' ? '$' : currency;
 
   return (

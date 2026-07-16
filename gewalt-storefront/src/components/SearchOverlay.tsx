@@ -15,7 +15,7 @@ interface SearchResult {
   thumbnail?: { url: string; alt?: string } | null;
   pricing?: {
     priceRange: {
-      gross: { amount: number; currency: string };
+      start: { gross: { amount: number; currency: string } };
     };
   };
 }
@@ -67,7 +67,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     try {
       const data = await saleorClient.request<{ products: { edges: Array<{ node: SearchResult }> } }>(
         SEARCH_PRODUCTS,
-        { query: searchQuery, first: 8 }
+        { query: searchQuery, first: 8, channel: 'default-channel' }
       );
       setResults(data.products.edges.map((e) => e.node));
     } catch {
@@ -166,9 +166,9 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 <h3 className="text-sm font-display uppercase tracking-wider text-gewalt-text group-hover:text-gewalt-primary transition-colors">
                   {product.name}
                 </h3>
-                {product.pricing?.priceRange?.gross && (
+                {product.pricing?.priceRange?.start?.gross && (
                   <p className="text-sm text-gewalt-text-muted">
-                    ${product.pricing.priceRange.gross.amount.toFixed(2)}
+                    ${product.pricing.priceRange.start.gross.amount.toFixed(2)}
                   </p>
                 )}
               </Link>

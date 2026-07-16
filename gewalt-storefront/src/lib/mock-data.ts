@@ -9,7 +9,7 @@ export const MOCK_PRODUCTS = [
     name: 'Gewalt Tee Black',
     slug: 'gewalt-tee-black',
     thumbnail: null,
-    pricing: { priceRange: { gross: { amount: 28.00, currency: 'USD' } } },
+    pricing: { priceRange: { start: { gross: { amount: 28.00, currency: 'USD' } } } },
     category: { name: 'T-Shirts', slug: 't-shirts' },
   },
   {
@@ -17,7 +17,7 @@ export const MOCK_PRODUCTS = [
     name: 'Gewalt Hoodie Dark',
     slug: 'gewalt-hoodie-dark',
     thumbnail: null,
-    pricing: { priceRange: { gross: { amount: 58.00, currency: 'USD' } } },
+    pricing: { priceRange: { start: { gross: { amount: 58.00, currency: 'USD' } } } },
     category: { name: 'Hoodies', slug: 'hoodies' },
   },
   {
@@ -25,7 +25,7 @@ export const MOCK_PRODUCTS = [
     name: 'Gewalt Tee Olive',
     slug: 'gewalt-tee-olive',
     thumbnail: null,
-    pricing: { priceRange: { gross: { amount: 28.00, currency: 'USD' } } },
+    pricing: { priceRange: { start: { gross: { amount: 28.00, currency: 'USD' } } } },
     category: { name: 'T-Shirts', slug: 't-shirts' },
   },
   {
@@ -33,7 +33,7 @@ export const MOCK_PRODUCTS = [
     name: 'Gewalt Long Sleeve Grey',
     slug: 'gewalt-long-sleeve-grey',
     thumbnail: null,
-    pricing: { priceRange: { gross: { amount: 38.00, currency: 'USD' } } },
+    pricing: { priceRange: { start: { gross: { amount: 38.00, currency: 'USD' } } } },
     category: { name: 'Long Sleeves', slug: 'long-sleeves' },
   },
 ];
@@ -79,7 +79,7 @@ export const MOCK_PRODUCT_DETAIL = {
       pricing: { price: { gross: { amount: 28.00, currency: 'USD' } } },
     },
   ],
-  pricing: { priceRange: { gross: { amount: 28.00, currency: 'USD' } } },
+  pricing: { priceRange: { start: { gross: { amount: 28.00, currency: 'USD' } } } },
 };
 
 export const MOCK_CATEGORIES = [
