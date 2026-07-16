@@ -1,18 +1,19 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { fetchProductDetail } from '@/lib/saleor';
+import { resolveProductImage } from '@/lib/product-images';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { fetchProductDetail } from '@/lib/saleor';
 import { MOCK_PRODUCT_DETAIL } from '@/lib/mock-data';
 import SizeSelector from '@/components/SizeSelector';
 
 interface ProductPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps) {
+  const { slug } = await params;
   try {
-    const product = await fetchProductDetail(params.slug);
+    const product = await fetchProductDetail(slug);
     if (!product) return { title: 'Producto no encontrado' };
     return {
       title: product.name,
@@ -28,12 +29,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
   let product: any;
 
   try {
-    product = await fetchProductDetail(params.slug);
+    product = await fetchProductDetail(slug);
   } catch {
-    if (params.slug === MOCK_PRODUCT_DETAIL.slug) {
+    if (slug === MOCK_PRODUCT_DETAIL.slug) {
       product = MOCK_PRODUCT_DETAIL;
     } else {
       notFound();
@@ -41,7 +43,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   if (!product) {
-    if (params.slug === MOCK_PRODUCT_DETAIL.slug) {
+    if (slug === MOCK_PRODUCT_DETAIL.slug) {
       product = MOCK_PRODUCT_DETAIL;
     } else {
       notFound();
@@ -85,7 +87,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {firstImage ? (
             <div className="relative aspect-[3/4] bg-gewalt-surface-alt">
               <Image
-                src={firstImage.url}
+                src={resolveProductImage(firstImage.url, product.slug)}
                 alt={firstImage.alt || product.name}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -104,7 +106,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {images.map((img: any, i: number) => (
                 <div key={i} className="relative w-20 h-20 flex-shrink-0 bg-gewalt-surface-alt">
                   <Image
-                    src={img.url}
+                    src={resolveProductImage(img.url, product.slug)}
                     alt={img.alt || `${product.name} ${i + 1}`}
                     fill
                     sizes="80px"

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { resolveProductImage } from '@/lib/product-images';
 
 interface ProductCardProps {
   name: string;
@@ -23,6 +24,9 @@ export default function ProductCard({
   currency = '$',
   tag,
 }: ProductCardProps) {
+  const img = resolveProductImage(thumbnail, slug);
+  const isExternal = img.startsWith('http');
+
   return (
     <Link href={`/product/${slug}`} className="group block">
       <motion.div
@@ -32,11 +36,12 @@ export default function ProductCard({
       >
         {thumbnail ? (
           <Image
-            src={thumbnail}
+            src={img}
             alt={thumbnailAlt || name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            unoptimized={!isExternal}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gewalt-text-muted text-sm aspect-[3/4]">

@@ -1,9 +1,17 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'http', hostname: '127.0.0.1', port: '8001' },
+      { protocol: 'https', hostname: '**.saleor.cloud' },
+      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'http', hostname: '127.0.0.1' },
+      { protocol: 'http', hostname: '0.0.0.0' },
+      { protocol: 'https', hostname: '**.r2.cloudflarestorage.com' },
+      { protocol: 'https', hostname: '**.s3.amazonaws.com' },
+      { protocol: 'https', hostname: 'gewaltoficial.shop' },
+      { protocol: 'http', hostname: 'gewaltoficial.shop' },
     ],
-    loader: 'custom',
-    loaderFile: './image-loader.js',
   },
 };
+
+module.exports = nextConfig;

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
+import { resolveProductImage } from '@/lib/product-images';
 
 interface Product {
   id: string;
@@ -51,7 +52,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
           <ProductCard
             name={product.name}
             slug={product.slug}
-            thumbnail={product.thumbnail?.url}
+            thumbnail={resolveProductImage(product.thumbnail?.url, product.slug)}
             thumbnailAlt={product.thumbnail?.alt}
             price={product.pricing?.priceRange?.start?.gross?.amount}
             currency={product.pricing?.priceRange?.start?.gross?.currency === 'USD' ? '$' : undefined}
