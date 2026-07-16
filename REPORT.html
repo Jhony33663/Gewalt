@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEWALT Storefront — Delivery Report</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a1a; background: #fff; line-height: 1.5; }
+  .page { max-width: 210mm; margin: 0 auto; padding: 20mm 18mm; }
+  header { margin-bottom: 2rem; border-bottom: 2px solid #1A3A2A; padding-bottom: 1.5rem; }
+  header h1 { font-size: 2.4rem; font-weight: 800; color: #1A3A2A; letter-spacing: -0.02em; }
+  header .tagline { color: #5A574F; font-size: 1rem; margin-top: 4px; }
+  header .meta { display: flex; gap: 2rem; margin-top: 1rem; font-size: 0.85rem; color: #666; }
+  h2 { font-size: 1.4rem; color: #1A3A2A; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid #E5E3DE; }
+  h3 { font-size: 1.05rem; margin: 1rem 0 0.5rem; color: #1A1A1A; }
+  p { margin-bottom: 0.6rem; color: #333; }
+  ul { margin: 0.5rem 0 1rem 1.4rem; }
+  li { margin-bottom: 0.3rem; color: #333; }
+  .screenshot { 
+    border: 1px solid #E5E3DE; 
+    border-radius: 8px; 
+    margin: 1rem 0; 
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .screenshot img { width: 100%; display: block; }
+  .screenshot .caption { background: #FAFAF8; padding: 0.5rem 0.8rem; font-size: 0.8rem; color: #5A574F; border-top: 1px solid #E5E3DE; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .grid .screenshot { margin: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; }
+  th, td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid #E5E3DE; font-size: 0.9rem; }
+  th { background: #FAFAF8; font-weight: 600; color: #1A3A2A; }
+  code { background: #F2F0EC; padding: 1px 5px; border-radius: 3px; font-size: 0.85rem; }
+  .badge { display: inline-block; background: #1A3A2A; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .flow { background: #F3FAF6; padding: 1rem 1.2rem; border-radius: 6px; margin: 1rem 0; border-left: 3px solid #1A3A2A; }
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #E5E3DE; font-size: 0.8rem; color: #9E9B93; }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 10mm; }
+    .screenshot { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>GEWALT — Storefront</h1>
+  <p class="tagline">Next.js 14 + Tailwind + Saleor GraphQL</p>
+  <div class="meta">
+    <span><strong>Versión:</strong> 1.0.0</span>
+    <span><strong>Fecha:</strong> July 2026</span>
+    <span><strong>Repositorio:</strong> github.com/Jhony33663/Gewalt</span>
+    <span><strong>Branch:</strong> storefront-nextjs</span>
+  </div>
+</header>
+
+<h2>1. Resumen Ejecutivo</h2>
+<p>Storefront profesional para la marca <strong>GEWALT</strong> streetwear desarrollado con Next.js 14, Tailwind CSS y Saleor como backend de e-commerce. Incluye homepage con video, catálogo con productos reales, selector de talla + color, integración directa a WhatsApp con mensaje pre-llenado, y diseño editorial basado en la dirección visual de la marca.</p>
+
+<h3>Características entregadas</h3>
+<ul>
+  <li><strong>Hero con video autoplay</strong> — Video de fondo con degradado editorial y CTA</li>
+  <li><strong>Catálogo real</strong> — Datos desde Saleor GraphQL con precios, imágenes y stock</li>
+  <li><strong>Selector de talla + color</strong> — Circulitos de color + tallas con mensaje WhatsApp completo</li>
+  <li><strong>Imágenes oficiales GEWALT</strong> — Fotos reales de gewaltoficial.shop</li>
+  <li><strong>WhatsApp checkout</strong> — Mensaje pre-llenado con producto, talla, color y precio</li>
+  <li><strong>Diseño editorial</strong> — Instrument Serif, Space Grotesk, DM Sans + paleta verde/negro</li>
+  <li><strong>Drops / Colecciones</strong> — Poblado desde Saleor collections API</li>
+  <li><strong>Footer profesional</strong> — Newsletter, señales de confianza, links organizados</li>
+</ul>
+
+<h2>2. Home Page</h2>
+<div class="screenshot">
+  <img src="file:///C:\Users\jhony\AppData\Local\hermes\cache\screenshots\browser_screenshot_5ed2db88861b410880f9416652268098.png" alt="Homepage screenshot">
+  <div class="caption">Homepage — Hero con video, colecciones, productos destacados, footer</div>
+</div>
+
+<p>Secciones del homepage:</p>
+<ul>
+  <li><strong>Hero fullscreen</strong> — Video en loop + degradado + headline "Para los días más fríos"</li>
+  <li><strong>Colecciones</strong> — Hoodies, Tees, Abrigos con imágenes editoriales</li>
+  <li><strong>Lo más buscado</strong> — Grid de 8 productos con fotos GEWALT reales</li>
+  <li><strong>Editorial</strong> — "Ropa para quienes viven la calle" (link a About)</li>
+  <li><strong>CTA WhatsApp</strong> — "Comprar directo por WhatsApp"</li>
+</ul>
+
+<h2>3. Catálogo / Shop</h2>
+<div class="screenshot">
+  <img src="file:///C:\Users\jhony\AppData\Local\hermes\cache\screenshots\browser_screenshot_5ed2db88861b410880f9416652268098.png" alt="Shop screenshot">
+  <div class="caption">Shop — Grid de productos con imágenes GEWALT, filtros de categoría</div>
+</div>
+
+<ul>
+  <li>Grid responsivo (2→3→4 columnas)</li>
+  <li>Filtros de categoría desde Saleor</li>
+  <li>Animación hover (scale al 102%)</li>
+  <li>Imágenes oficiales GEWALT por slug</li>
+</ul>
+
+<h2>4. Detalle de Producto</h2>
+<div class="screenshot">
+  <img src="file:///C:\Users\jhony\AppData\Local\hermes\cache\screenshots\browser_screenshot_5ed2db88861b410880f9416652268098.png" alt="Product detail screenshot">
+  <div class="caption">Detalle — Galería, selector de color (4 colores), selector de talla (S-XXL), WhatsApp CTA</div>
+</div>
+
+<p><strong>Flujo de compra:</strong></p>
+<div class="flow">
+  Usuario selecciona <strong>color</strong> → selecciona <strong>talla</strong> → clic en <strong>"Comprar por WhatsApp"</strong> → se abre wa.me con mensaje:<br><br>
+  <code>Hola GEWALT 👋<br>Quiero comprar:<br>• Monospace Tee — Talla: M · Color: Negro — $14.00<br><br>Producto: https://...</code>
+</div>
+
+<h2>5. Drops / Colecciones</h2>
+<div class="screenshot">
+  <img src="file:///C:\Users\jhony\AppData\Local\hermes\cache\screenshots\browser_screenshot_5ed2db88861b410880f9416652268098.png" alt="Drops screenshot">
+  <div class="caption">Drops — Colecciones "Featured Products" y "Summer Picks" desde Saleor</div>
+</div>
+
+<h2>6. Diseño y Tokens</h2>
+<p>Diseño basado en la dirección visual de Iris (GEWALT):</p>
+<table>
+  <tr><th>Token</th><th>Valor</th><th>Uso</th></tr>
+  <tr><td>--gewalt-primary</td><td>#1A3A2A</td><td>Botones, accent, announcement bar</td></tr>
+  <tr><td>--gewalt-secondary</td><td>#1A1A1A</td><td>Hero bg dark</td></tr>
+  <tr><td>--gewalt-surface</td><td>#FAFAF8</td><td>Background cálido</td></tr>
+  <tr><td>--font-serif</td><td>Instrument Serif</td><td>Editorial headlines</td></tr>
+  <tr><td>--font-display</td><td>Space Grotesk</td><td>Labels, botones</td></tr>
+  <tr><td>--font-body</td><td>DM Sans</td><td>Body copy</td></tr>
+</table>
+
+<h2>7. Arquitectura Técnica</h2>
+
+<h3>Stack</h3>
+<ul>
+  <li><strong>Framework:</strong> Next.js 14 (App Router, Server Components)</li>
+  <li><strong>Styling:</strong> Tailwind CSS 3 + CSS custom properties</li>
+  <li><strong>Backend:</strong> Saleor (GraphQL API — <code>localhost:8001</code>)</li>
+  <li><strong>Animaciones:</strong> Framer Motion</li>
+  <li><strong>WhatsApp:</strong> wa.me deep links con mensaje pre-llenado</li>
+</ul>
+
+<h3>Estructura de Carpetas</h3>
+<pre style="background:#F2F0EC; padding:1rem; border-radius:6px; font-size:0.8rem; overflow-x:auto;">
+gewalt-storefront/
+├── public/                 # assets estáticos (imágenes, video)
+├── src/app/               # Next.js App Router pages
+│   ├── page.tsx            # Homepage
+│   ├── shop/               # Catálogo
+│   ├── product/[slug]/     # Detalle + size/color selector
+│   ├── about/              # Manifiesto
+│   ├── drops/              # Colecciones
+│   ├── contact/            # Contacto
+│   ├── help/               # FAQ, Shipping, Size Guide
+│   └── privacy/, terms/    # Legales
+├── src/components/         # UI reutilizable
+└── src/lib/                # saleor.ts, whatsapp.ts, product-images.ts
+</pre>
+
+<h2>8. Changelog vs. v0.1 anterior</h2>
+<table>
+  <tr><th>Módulo</th><th>Antes</th><th>Ahora</th></tr>
+  <tr><td>Hero</td><td>Estático, sin video</td><td>Video autoplay loop + degradado + poster</td></tr>
+  <tr><td>Imagenes</td><td>Mock, sin fotos</td><td>5 fotos oficiales GEWALT por slug</td></tr>
+  <tr><td>Product detail</td><td>Solo talla</td><td>Talla + color + mensaje WhatsApp completo</td></tr>
+  <tr><td>Catálogo</td><td>Datos demo</td><td>Saleor GraphQL real (products, categories)</td></tr>
+  <tr><td>Drops</td><td>Hardcodeado "próximamente"</td><td>Saleor collections API</td></tr>
+  <tr><td>Footer</td><td>Links básicos</td><td>Newsletter + trust signals + layout a 4 cols</td></tr>
+  <tr><td>CSS</td><td>Tokens rotos, gradient malo</td><td>Tokens completos, cuerpo limpio</td></tr>
+</table>
+
+<h2>9. URLs y Acceso</h2>
+<ul>
+  <li><strong>Repositorio:</strong> <code>github.com/Jhony33663/Gewalt</code></li>
+  <li><strong>Branch:</strong> <code>storefront-nextjs</code></li>
+  <li><strong>Página de PR:</strong> <code>github.com/Jhony33663/Gewalt/pull/new/storefront-nextjs</code></li>
+</ul>
+
+<h2>10. Siguientes pasos (producción)</h2>
+<ul>
+  <li>Configurar endpoint Saleor de producción (con CDN de imágenes)</li>
+  <li>Mapear imágenes Product.media[0] → URLs públicas</li>
+  <li>Añadir analytics (GA4 / PostHog)</li>
+  <li>Configurar ISR para revalidación de productos</li>
+  <li>Tracking de errores (Sentry)</li>
+  <li>Dominio personalizado + SSL</li>
+</ul>
+
+<footer>
+  <p><strong>GEWALT Storefront v1.0</strong> — Julio 2026.</p>
+  <p>Desarrollado con Next.js 14 + Tailwind + Saleor GraphQL. Repositorio: <code>github.com/Jhony33663/Gewalt</code></p>
+</footer>
+
+</div>
+</body>
+</html>
