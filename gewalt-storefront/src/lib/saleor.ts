@@ -6,6 +6,7 @@ export const saleorClient = new GraphQLClient(API_URL, {
   headers: {
     'Content-Type': 'application/json',
   },
+  fetch: (url, options) => fetch(url, { ...options, cache: 'no-store' }),
 });
 
 // ─── Fragments ───────────────────────────────────────────
@@ -18,6 +19,11 @@ const PRODUCT_CARD_FRAGMENT = gql`
     thumbnail {
       url
       alt
+    }
+    media {
+      url
+      alt
+      type
     }
     pricing {
       priceRange {

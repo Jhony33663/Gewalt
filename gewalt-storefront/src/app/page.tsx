@@ -11,7 +11,8 @@ export default async function HomePage() {
     const result = await fetchProducts(8);
     const fetched = result.edges.map((e) => e.node);
     if (fetched.length > 0) products = fetched;
-  } catch {
+  } catch (error) {
+    console.error('Error fetching products:', error);
     // use mock data
   }
 

@@ -9,6 +9,7 @@ interface Product {
   name: string;
   slug: string;
   thumbnail?: { url: string; alt: string } | null;
+  media?: Array<{ url: string; alt?: string }> | null;
   pricing?: {
     priceRange?: {
       start?: {
@@ -41,24 +42,29 @@ export default function ProductGrid({ products }: ProductGridProps) {
         visible: { transition: { staggerChildren: 0.08 } },
       }}
     >
-      {products.map((product) => (
-        <motion.div
-          key={product.id}
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
-          }}
-        >
-          <ProductCard
-            name={product.name}
-            slug={product.slug}
-            thumbnail={resolveProductImage(product.thumbnail?.url, product.slug)}
-            thumbnailAlt={product.thumbnail?.alt}
-            price={product.pricing?.priceRange?.start?.gross?.amount}
-            currency={product.pricing?.priceRange?.start?.gross?.currency === 'USD' ? '$' : undefined}
-          />
-        </motion.div>
-      ))}
+      {products.map((product) => {
+        const primaryImage = product.media && product.media.length > 0 ? product.media[0].url : product.thumbnail?.url;
+        const hoverImage = product.media && product.media.length > 1 ? product.media[1].url : undefined;
+        return (
+          <motion.div
+            key={product.id}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+            }}
+          >
+            <ProductCard
+              name={product.name}
+              slug={product.slug}
+              thumbnail={primaryImage ? resolveProductImage(primaryImage, product.slug) : undefined}
+              thumbnailAlt={product.thumbnail?.alt || product.name}
+              hoverThumbnail={hoverImage ? resolveProductImage(hoverImage, product.slug) : undefined}
+              price={product.pricing?.priceRange?.start?.gross?.amount}
+              currency={product.pricing?.priceRange?.start?.gross?.currency === 'USD' ? '$' : undefined}
+            />
+          </motion.div>
+        );
+      })}
     </motion.div>
   );
 }

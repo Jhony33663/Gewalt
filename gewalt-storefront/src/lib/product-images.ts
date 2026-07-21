@@ -16,7 +16,9 @@ function pickBySlug(slug: string): string {
   return GEWALT_IMAGES[hash % GEWALT_IMAGES.length];
 }
 
-// Saleor devuelve localhost:8000, inaccesible desde browser
 export function resolveProductImage(url: string | null | undefined, slug: string): string {
+  if (url) {
+    return url;
+  }
   return pickBySlug(slug);
 }
