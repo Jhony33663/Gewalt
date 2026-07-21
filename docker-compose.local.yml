@@ -1,0 +1,77 @@
+services:
+  saleor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py populatedb --createsuperuser &&
+             uvicorn saleor.asgi:application --host 0.0.0.0 --port 8000 --reload"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - saleor-media:/app/media
+      - saleor-static:/app/static
+
+  dashboard:
+    image: ghcr.io/saleor/saleor-dashboard:3.23
+    restart: unless-stopped
+    ports:
+      - "9000:80"
+    environment:
+      API_URL: "http://saleor:8000/graphql/"
+      LOCALE_CODE: "es"
+
+  db:
+    image: docker.io/library/postgres:15-alpine
+    restart: unless-stopped
+    volumes:
+      - saleor-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: saleor
+      POSTGRES_PASSWORD: saleor
+      POSTGRES_DB: saleor
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saleor"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cache:
+    image: docker.io/valkey/valkey:8.1-alpine
+    restart: unless-stopped
+    volumes:
+      - saleor-cache:/data
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mailpit:
+    image: docker.io/axllent/mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  saleor-db:
+    driver: local
+  saleor-cache:
+    driver: local
+  saleor-media:
+    driver: local
+  saleor-static:
+    driver: local
