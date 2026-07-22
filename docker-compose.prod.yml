@@ -13,15 +13,7 @@ services:
         condition: service_started
     volumes:
       - saleor-media:/app/media
-    command: >
-      sh -c "python manage.py migrate --no-input &&
-             uvicorn saleor.asgi:application
-             --host=0.0.0.0 --port=8000 --workers=2
-             --lifespan=auto --ws=none
-             --no-server-header --no-access-log
-             --timeout-keep-alive=35
-             --timeout-graceful-shutdown=30
-             --limit-max-requests=10000"
+    command: sh -c "python manage.py migrate --no-input && uvicorn saleor.asgi:application --host=0.0.0.0 --port=8000 --workers=2 --lifespan=auto --ws=none --no-server-header --no-access-log --timeout-keep-alive=35 --timeout-graceful-shutdown=30 --limit-max-requests=10000"
 
   api-proxy:
     image: nginx:alpine
