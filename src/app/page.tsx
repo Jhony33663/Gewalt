@@ -29,6 +29,7 @@ export default async function HomePage() {
           muted
           loop
           playsInline
+          preload="metadata"
           poster="/bg-hero-main.jpg"
         >
           <source src="/hero.mp4" type="video/mp4" />
