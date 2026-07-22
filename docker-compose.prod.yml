@@ -42,6 +42,8 @@ services:
     environment:
       API_URI: "http://142.93.12.243:8000/graphql/"
       API_URL: "http://142.93.12.243:8000/graphql/"
+      APP_MOUNT_URI: "/"
+      STATIC_URL: "/"
       LOCALE_CODE: "es"
 
   frontend:
