@@ -36,3 +36,7 @@ Pipfile
 # Exported results file
 django-queries-results.html
 !.claude/skills
+
+# Production secrets - nunca subir
+.env.production
+.env.local

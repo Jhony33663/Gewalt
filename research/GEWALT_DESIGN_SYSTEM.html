@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEWALT · Design System</title>
+<style>
+:root {
+  /* === PALETA GEWALT === */
+  --gg-green: #0e3b2f;
+  --gg-green-dark: #06362f;
+  --gg-green-light: #166534;
+  --gg-black: #232323;
+  --gg-black-soft: #1a1a1a;
+  --gg-white: #ffffff;
+  --gg-cream: #f1f5ea;
+  --gg-sand: #faf9f6;
+  --gg-gray: #50b8c8;
+  --gg-gold: #f4a62a;
+  --gg-red: #b21f1f;
+  --gg-border: #d8dfd2;
+
+  /* === TIPOGRAFÍA === */
+  --gg-font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --gg-font-body: 'Inter', -apple-system, sans-serif;
+
+  /* === ESPACIADO === */
+  --gg-space-xs: 8px;
+  --gg-space-sm: 16px;
+  --gg-space-md: 32px;
+  --gg-space-lg: 64px;
+  --gg-space-xl: 96px;
+  --gg-radius: 0px;
+  --gg-radius-sm: 4px;
+  --gg-radius-pill: 999px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--gg-font-body);
+  color: var(--gg-black);
+  background: var(--gg-sand);
+  line-height: 1.6;
+}
+
+/* === HEADER EDITORIAL === */
+.gg-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--gg-space-sm) var(--gg-space-lg);
+  background: var(--gg-green);
+  color: var(--gg-white);
+  backdrop-filter: blur(12px);
+}
+
+.gg-header-logo {
+  font-family: var(--gg-font-display);
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--gg-white);
+  text-decoration: none;
+}
+
+.gg-header-nav {
+  display: flex;
+  gap: var(--gg-space-md);
+  list-style: none;
+}
+
+.gg-header-nav a {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gg-white);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.gg-header-nav a:hover { opacity: 0.7; }
+
+/* === HERO FULLSCREEN === */
+.gg-hero {
+  min-height: 90vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: var(--gg-space-lg);
+  background: linear-gradient(90deg, var(--gg-sand) 0%, var(--gg-sand) 50%, var(--gg-cream) 50%, var(--gg-cream) 100%);
+}
+
+.gg-hero-content {
+  padding: var(--gg-space-lg);
+  border: 6px solid var(--gg-green);
+  background: var(--gg-white);
+  max-width: 620px;
+}
+
+.gg-hero-kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gg-gray);
+  margin-bottom: var(--gg-space-sm);
+}
+
+.gg-hero h1 {
+  font-family: var(--gg-font-display);
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--gg-green);
+  margin-bottom: var(--gg-space-sm);
+}
+
+.gg-hero p {
+  font-size: 17px;
+  color: var(--gg-black);
+  line-height: 1.8;
+  max-width: 500px;
+}
+
+.gg-hero-actions {
+  display: flex;
+  gap: var(--gg-space-sm);
+  margin-top: var(--gg-space-md);
+}
+
+.gg-hero-image {
+  min-height: 600px;
+  background: url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1200&q=85') center/cover no-repeat;
+  box-shadow: 32px 32px 0 var(--gg-green);
+}
+
+/* === BOTONES === */
+.gg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 40px;
+  font-family: var(--gg-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  border-radius: var(--gg-radius);
+}
+
+.gg-btn-primary {
+  background: var(--gg-green);
+  color: var(--gg-white);
+}
+
+.gg-btn-primary:hover {
+  background: var(--gg-green-dark);
+  box-shadow: 0 4px 20px rgba(14, 59, 47, 0.2);
+}
+
+.gg-btn-ghost {
+  background: transparent;
+  color: var(--gg-green);
+  border: 1px solid var(--gg-green);
+}
+
+.gg-btn-ghost:hover {
+  background: var(--gg-green);
+  color: var(--gg-white);
+}
+
+.gg-btn-dark {
+  background: var(--gg-black);
+  color: var(--gg-white);
+}
+
+.gg-btn-dark:hover {
+  background: var(--gg-black-soft);
+}
+
+/* === SECCIONES === */
+.gg-section {
+  padding: var(--gg-space-xl) var(--gg-space-lg);
+}
+
+.gg-section-cream { background: var(--gg-cream); }
+
+.gg-section-title {
+  font-family: var(--gg-font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--gg-green);
+  text-align: center;
+  margin-bottom: var(--gg-space-xs);
+}
+
+.gg-section-subtitle {
+  text-align: center;
+  color: var(--gg-black);
+  font-size: 15px;
+  opacity: 0.7;
+  max-width: 500px;
+  margin: 0 auto var(--gg-space-lg);
+}
+
+/* === GRID DE PRODUCTOS === */
+.gg-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gg-space-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* === TARJETA DE PRODUCTO === */
+.gg-product-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.4s ease;
+}
+
+.gg-product-card:hover {
+  transform: translateY(-4px);
+}
+
+.gg-product-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  margin-bottom: var(--gg-space-sm);
+  overflow: hidden;
+  background: var(--gg-cream);
+}
+
+.gg-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.gg-product-card:hover .gg-product-image img {
+  transform: scale(1.05);
+}
+
+.gg-product-image-secondary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.gg-product-card:hover .gg-product-image-secondary {
+  opacity: 1;
+}
+
+.gg-product-badge {
+  position: absolute;
+  top: var(--gg-space-xs);
+  left: var(--gg-space-xs);
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--gg-radius-pill);
+}
+
+.gg-product-badge-new {
+  background: var(--gg-green);
+  color: var(--gg-white);
+}
+
+.gg-product-badge-wanted {
+  background: var(--gg-gold);
+  color: var(--gg-black);
+}
+
+.gg-product-info {
+  padding: 0;
+}
+
+.gg-product-name {
+  font-family: var(--gg-font-display);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--gg-black);
+  margin-bottom: 4px;
+}
+
+.gg-product-price {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gg-green);
+  letter-spacing: 0.05em;
+}
+
+.gg-product-colors {
+  display: flex;
+  gap: 6px;
+  margin-top: var(--gg-space-xs);
+}
+
+.gg-color-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* === CATEGORÍAS === */
+.gg-categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gg-space-md);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gg-category-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+
+.gg-category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.gg-category-card:hover img {
+  transform: scale(1.05);
+}
+
+.gg-category-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 59, 47, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--gg-white);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.gg-category-card:hover .gg-category-overlay { opacity: 1; }
+
+.gg-category-name {
+  font-family: var(--gg-font-display);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.gg-category-count {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  margin-top: var(--gg-space-xs);
+  opacity: 0.8;
+}
+
+/* === FOOTER === */
+.gg-footer {
+  background: var(--gg-green);
+  color: var(--gg-white);
+  padding: var(--gg-space-lg);
+}
+
+.gg-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--gg-space-lg);
+  max-width: 1400px;
+  margin: 0 auto var(--gg-space-lg);
+}
+
+.gg-footer h4 {
+  font-family: var(--gg-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--gg-space-sm);
+}
+
+.gg-footer a {
+  display: block;
+  color: var(--gg-white);
+  opacity: 0.7;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 0;
+  transition: opacity 0.3s ease;
+}
+
+.gg-footer a:hover { opacity: 1; }
+
+.gg-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: var(--gg-space-sm);
+  display: flex;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .gg-product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--gg-space-sm); }
+  .gg-categories { grid-template-columns: 1fr; }
+  .gg-hero { grid-template-columns: 1fr; min-height: auto; padding: var(--gg-space-md); }
+  .gge-ro-image { min-height: 400px; }
+  .gg-footer-grid { grid-template-columns: 1fr 1fr; gap: var(--gg-space-md); }
+  .gg-header { padding: var(--gg-space-sm); }
+  .gg-header-nav { display: none; }
+}
+
+@media (max-width: 768px) {
+  .gg-product-grid { grid-template-columns: 1fr; }
+  .gg-hero h1 { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="gg-header">
+  <a href="#" class="gg-header-logo">gewalt</a>
+  <nav>
+    <ul class="gg-header-nav">
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Drops</a></li>
+      <li><a href="#">Lookbook</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
+  <div style="display:flex;gap:20px;align-items:center;">
+    <a href="#" style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;">Buscar</a>
+    <a href="#" style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;">Cart (0)</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="gg-hero">
+  <div class="gg-hero-content">
+    <span class="gg-hero-kicker">Ediciones limitadas</span>
+    <h1>No lo pienses. Esto es tu sexto sentido.</h1>
+    <p>Hoodies urbanos de edición limitada con pedido directo por WhatsApp.</p>
+    <div class="gg-hero-actions">
+      <a href="#" class="gg-btn gg-btn-primary">Comprar ahora</a>
+      <a href="#" class="gg-btn gg-btn-ghost">Ver drops</a>
+    </div>
+  </div>
+  <div class="gg-hero-image"></div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section class="gg-section gg-section-cream">
+  <h2 class="gg-section-title">Colecciones</h2>
+  <p class="gg-section-subtitle">Drops limitados para cada temporada</p>
+  <div class="gg-categories">
+    <div class="gg-category-card">
+      <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=85" alt="Hoodies">
+      <div class="gg-category-overlay">
+        <span class="gg-category-name">Hoodies</span>
+        <span class="gg-category-count">3 productos</span>
+      </div>
+    </div>
+    <div class="gg-category-card">
+      <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=85" alt="T-Shirts">
+      <div class="gg-category-overlay">
+        <span class="gg-category-name">T-Shirts</span>
+        <span class="gg-category-count">5 productos</span>
+      </div>
+    </div>
+    <div class="gg-category-card">
+      <img src="https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=800&q=85" alt="Long Sleeves">
+      <div class="gg-category-overlay">
+        <span class="gg-category-name">Long Sleeves</span>
+        <span class="gg-category-count">2 productos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section class="gg-section">
+  <h2 class="gg-section-title">New Arrivals</h2>
+  <p class="gg-section-subtitle">Últimos lanzamientos de la temporada</p>
+  <div class="gg-product-grid">
+    <!-- Producto 1 -->
+    <div class="gg-product-card">
+      <div class="gg-product-image">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=85" alt="Max One Hoodie">
+        <img class="gg-product-image-secondary" src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=85" alt="Detalle">
+        <span class="gg-product-badge gg-product-badge-new">New</span>
+      </div>
+      <div class="gg-product-info">
+        <div class="gg-product-name">Max One Hoodie</div>
+        <div class="gg-product-price">$89.00</div>
+        <div class="gg-product-colors">
+          <span class="gg-color-swatch" style="background:#232323"></span>
+          <span class="gg-color-swatch" style="background:#f1f5ea"></span>
+        </div>
+      </div>
+    </div>
+    <!-- Producto 2 -->
+    <div class="gg-product-card">
+      <div class="gg-product-image">
+        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=85" alt="Urban Tee">
+        <img class="gg-product-image-secondary" src="https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=600&q=85" alt="Detalle">
+        <span class="gg-product-badge gg-product-badge-wanted">Most Wanted</span>
+      </div>
+      <div class="gg-product-info">
+        <div class="gg-product-name">Urban Tee Black</div>
+        <div class="gg-product-price">$45.00</div>
+        <div class="gg-product-colors">
+          <span class="gg-color-swatch" style="background:#232323"></span>
+          <span class="gg-color-swatch" style="background:#0e3b2f"></span>
+        </div>
+      </div>
+    </div>
+    <!-- Producto 3 -->
+    <div class="gg-product-card">
+      <div class="gg-product-image">
+        <img src="https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=600&q=85" alt="Long Sleeve Pro">
+        <img class="gg-product-image-secondary" src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=85" alt="Detalle">
+      </div>
+      <div class="gg-product-info">
+        <div class="gg-product-name">Long Sleeve Pro</div>
+        <div class="gg-product-price">$65.00</div>
+        <div class="gg-product-colors">
+          <span class="gg-color-swatch" style="background:#232323"></span>
+          <span class="gg-color-swatch" style="background:#d8dfd2"></span>
+        </div>
+      </div>
+    </div>
+    <!-- Producto 4 -->
+    <div class="gg-product-card">
+      <div class="gg-product-image">
+        <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=600&q=85" alt="Essential Hoodie">
+        <img class="gg-product-image-secondary" src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=85" alt="Detalle">
+        <span class="gg-product-badge gg-product-badge-new">New</span>
+      </div>
+      <div class="gg-product-info">
+        <div class="gg-product-name">Essential Hoodie</div>
+        <div class="gg-product-price">$79.00</div>
+        <div class="gg-product-colors">
+          <span class="gg-color-swatch" style="background:#0e3b2f"></span>
+          <span class="gg-color-swatch" style="background:#f1f5ea"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="gg-footer">
+  <div class="gg-footer-grid">
+    <div>
+      <h4>gewalt</h4>
+      <p style="opacity:.7;font-size:13px;line-height:1.7;">Hoodies urbanos de edición limitada. Hechos con actitud y propósito.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="#">Hoodies</a>
+      <a href="#">T-Shirts</a>
+      <a href="#">Long Sleeves</a>
+      <a href="#">Accesorios</a>
+    </div>
+    <div>
+      <h4>Ayuda</h4>
+      <a href="#">Envíos</a>
+      <a href="#">Devoluciones</a>
+      <a href="#">Guía de tallas</a>
+      <a href="#">Contacto</a>
+    </div>
+    <div>
+      <h4>Síguenos</h4>
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+  <div class="gg-footer-bottom">
+    <span>© 2026 GEWALT. Todos los derechos reservados.</span>
+    <span>Hecho en Ecuador</span>
+  </div>
+</footer>
+
+</body>
+</html>
