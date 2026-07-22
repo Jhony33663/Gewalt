@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   images: {
     remotePatterns: [
       // Saleor Cloud
@@ -7,6 +8,7 @@ const nextConfig = {
       // Local Docker / dev
       { protocol: 'http', hostname: 'localhost' },
       { protocol: 'http', hostname: '127.0.0.1' },
+      { protocol: 'http', hostname: '142.93.12.243' },
       // Common Saleor local patterns
       { protocol: 'http', hostname: '0.0.0.0' },
       // Media storage (S3, R2, etc.)

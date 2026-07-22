@@ -31,8 +31,20 @@ services:
     ports:
       - "9000:80"
     environment:
-      API_URL: "http://159.223.121.57:8000/graphql/"
+      API_URL: "http://142.93.12.243:8000/graphql/"
       LOCALE_CODE: "es"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        NEXT_PUBLIC_API_URL: "http://142.93.12.243:8000/graphql/"
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://142.93.12.243:8000/graphql/"
 
   db:
     image: docker.io/library/postgres:15-alpine
