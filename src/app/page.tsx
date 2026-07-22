@@ -11,16 +11,29 @@ export default async function HomePage() {
     const result = await fetchProducts(8);
     const fetched = result.edges.map((e) => e.node);
     if (fetched.length > 0) products = fetched;
-  } catch {
+  } catch (error) {
+    console.error('Error fetching products:', error);
     // use mock data
   }
 
   return (
     <>
-      {/* Hero — DARK editorial (Direction 2) */}
-      <section className="relative w-full h-[92vh] min-h-[580px] flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-gewalt-surface-alt" />
-        <div className="relative z-10 p-8 lg:p-16 max-w-[750px]">
+      {/* Hero — editorial con video/imagen de streetwear */}
+      <section className="relative w-full h-[92vh] min-h-[580px] flex items-center overflow-hidden bg-gewalt-secondary">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/80 z-10" />
+        <div className="absolute inset-0 opacity-40 bg-cover bg-center" style={{ backgroundImage: "url('/bg-hero-main.jpg')" }} />
+        {/* Video background autoplay */}
+        <video
+          className="absolute inset-0 z-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/bg-hero-main.jpg"
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="relative z-20 p-8 lg:p-16 max-w-[750px]">
           <span className="inline-block px-4 py-1.5 bg-gewalt-primary text-white text-[0.6875rem] font-semibold tracking-[0.15em] uppercase mb-6">
             Nueva Colección — 2026
           </span>
@@ -63,24 +76,21 @@ export default async function HomePage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 px-6 lg:px-16 mb-24">
         {[
-          { name: 'Hoodies', slug: 'hoodies', sub: 'Para los días más fríos' },
-          { name: 'Tees', slug: 't-shirts', sub: 'Lo que llevas todos los días' },
-          { name: 'Abrigos', slug: 'long-sleeves', sub: 'Para el frío de verdad' },
+          { name: 'Hoodies', slug: 'hoodies', img: '/img-hoodie-dark.jpg' },
+          { name: 'Tees', slug: 't-shirts', img: '/img-tee-black.jpg' },
+          { name: 'Abrigos', slug: 'long-sleeves', img: '/img-long-sleeve-grey.jpg' },
         ].map((col) => (
           <Link
             key={col.slug}
             href={`/shop/${col.slug}`}
             className="relative aspect-[4/3] overflow-hidden group cursor-pointer"
           >
-            <div className="absolute inset-0 bg-gewalt-surface-alt transition-all duration-500 group-hover:brightness-[0.45] group-hover:scale-[1.03]" />
+            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url('${col.img}')` }} />
             <div className="absolute inset-0 bg-black/35 group-hover:bg-black/55 transition-all duration-500" />
             <div className="absolute bottom-6 left-6 z-10">
               <h3 className="font-condensed text-3xl tracking-[0.1em] uppercase text-white mb-1">
                 {col.name}
               </h3>
-              <span className="font-body text-xs font-light text-[#8A8780] tracking-wide">
-                {col.sub}
-              </span>
             </div>
           </Link>
         ))}
@@ -101,9 +111,7 @@ export default async function HomePage() {
 
       {/* Editorial split */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[70vh]">
-        <div className="bg-gewalt-surface-alt flex items-center justify-center text-gewalt-text-muted text-sm">
-          Foto editorial
-        </div>
+        <div className="bg-cover bg-center" style={{ backgroundImage: "url('/bg-editorial-1.jpg')" }} />
         <div className="flex flex-col justify-center px-8 lg:px-16 py-16 lg:py-24 bg-green-50">
           <p className="font-body text-[0.6875rem] font-semibold tracking-[0.2em] uppercase text-green-600 mb-6">
             La marca
