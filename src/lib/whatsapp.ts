@@ -2,7 +2,7 @@
  * WhatsApp integration — generates wa.me deep links with pre-filled messages.
  */
 
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '593985316484';
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '593998115916';
 
 interface WhatsAppMessageParams {
   productName: string;

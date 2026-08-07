@@ -31,11 +31,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const displayName = params.category.replace(/-/g, ' ');
 
   return (
-    <div className="max-w-site mx-auto px-4 lg:px-8 py-12 lg:py-20">
-      <h1 className="font-display text-3xl md:text-4xl uppercase tracking-wider mb-12">
-        {displayName}
-      </h1>
-      <ProductGrid products={products} />
+    <div className="min-h-screen">
+      <div className="border-b border-gewalt-border">
+        <div className="max-w-site mx-auto px-6 lg:px-16 py-12">
+          <p className="font-display text-[0.65rem] tracking-[0.3em] uppercase text-gewalt-text-muted mb-2">GEWALT Studios</p>
+          <h1 className="font-serif italic text-[clamp(2.5rem,5vw,4rem)] text-gewalt-text leading-none capitalize">{displayName}</h1>
+        </div>
+      </div>
+      <div className="max-w-site mx-auto px-6 lg:px-16 py-12">
+        <ProductGrid products={products} />
+      </div>
     </div>
   );
 }

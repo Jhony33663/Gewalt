@@ -1,13 +1,22 @@
 import { GraphQLClient, gql } from 'graphql-request';
 
-const API_URL = process.env.NEXT_PUBLIC_SALEOR_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8001/graphql/';
+function getApiUrl() {
+  if (typeof window === 'undefined') {
+    return process.env.INTERNAL_SALEOR_API_URL || 'http://api-proxy:8000/graphql/';
+  }
+  return process.env.NEXT_PUBLIC_SALEOR_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/graphql/';
+}
 
-export const saleorClient = new GraphQLClient(API_URL, {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  fetch: (url, options) => fetch(url, { ...options, cache: 'no-store' }),
-});
+export function getSaleorClient() {
+  return new GraphQLClient(getApiUrl(), {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    fetch: (url, options) => fetch(url, { ...options, cache: 'no-store' }),
+  });
+}
+
+export const saleorClient = getSaleorClient();
 
 // ─── Fragments ───────────────────────────────────────────
 
@@ -42,8 +51,8 @@ const PRODUCT_CARD_FRAGMENT = gql`
 
 export const GET_PRODUCTS = gql`
   ${PRODUCT_CARD_FRAGMENT}
-  query GetProducts($first: Int!, $after: String, $channel: String) {
-    products(first: $first, after: $after, channel: $channel) {
+  query GetProducts($first: Int!, $after: String, $channel: String, $categories: [ID!]) {
+    products(first: $first, after: $after, channel: $channel, filter: { categories: $categories }) {
       edges {
         node {
           ...ProductCard
@@ -73,6 +82,7 @@ export const GET_PRODUCT_DETAIL = gql`
         id
         name
         sku
+        quantityAvailable
         attributes {
           attribute { name }
           values { name }
@@ -168,37 +178,54 @@ export const SEARCH_PRODUCTS = gql`
 
 const CHANNEL = 'default-channel';
 
-export async function fetchProducts(first = 20, after?: string, category?: string) {
-  const data = await saleorClient.request<{
+export async function fetchCategoryId(slug: string): Promise<string | null> {
+  try {
+    const data = await getSaleorClient().request<{ category: { id: string } | null }>(
+      gql`query GetCategoryId($slug: String!) { category(slug: $slug) { id } }`,
+      { slug }
+    );
+    return data.category?.id || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchProducts(first = 20, after?: string, categorySlug?: string) {
+  let categories: string[] | undefined = undefined;
+  if (categorySlug) {
+    const catId = await fetchCategoryId(categorySlug);
+    if (catId) categories = [catId];
+  }
+  const data = await getSaleorClient().request<{
     products: {
       edges: Array<{ node: any }>;
       pageInfo: { hasNextPage: boolean; endCursor: string | null };
     };
-  }>(GET_PRODUCTS, { first, after, channel: CHANNEL });
+  }>(GET_PRODUCTS, { first, after, channel: CHANNEL, categories });
   return data.products;
 }
 
 export async function fetchProductDetail(slug: string) {
-  const data = await saleorClient.request<{ product: any }>(GET_PRODUCT_DETAIL, { slug, channel: CHANNEL });
+  const data = await getSaleorClient().request<{ product: any }>(GET_PRODUCT_DETAIL, { slug, channel: CHANNEL });
   return data.product;
 }
 
 export async function fetchCategories() {
-  const data = await saleorClient.request<{
+  const data = await getSaleorClient().request<{
     categories: { edges: Array<{ node: any }> };
   }>(GET_CATEGORIES);
   return data.categories.edges.map((e) => e.node);
 }
 
 export async function fetchCollections() {
-  const data = await saleorClient.request<{
+  const data = await getSaleorClient().request<{
     collections: { edges: Array<{ node: any }> };
   }>(GET_COLLECTIONS, { channel: CHANNEL });
   return data.collections.edges.map((e) => e.node);
 }
 
 export async function searchProducts(query: string, first = 20) {
-  const data = await saleorClient.request<{
+  const data = await getSaleorClient().request<{
     products: { edges: Array<{ node: any }> };
   }>(SEARCH_PRODUCTS, { query, first, channel: CHANNEL });
   return data.products.edges.map((e) => e.node);

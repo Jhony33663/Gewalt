@@ -5,6 +5,9 @@ import { fetchProductDetail } from '@/lib/saleor';
 import { notFound } from 'next/navigation';
 import { MOCK_PRODUCT_DETAIL } from '@/lib/mock-data';
 import SizeSelector from '@/components/SizeSelector';
+import ProductGallery from '@/components/ProductGallery';
+import ProductGrid from '@/components/ProductGrid';
+import { fetchProducts } from '@/lib/saleor';
 
 interface ProductPageProps {
   params: { slug: string };
@@ -48,19 +51,46 @@ export default async function ProductPage({ params }: ProductPageProps) {
     }
   }
 
+  // Fetch otros productos
+  let relatedProducts: any[] = [];
+  try {
+    const result = await fetchProducts(4);
+    relatedProducts = result.edges.map((e) => e.node).filter((p: any) => p.slug !== product.slug);
+    if (relatedProducts.length > 4) relatedProducts = relatedProducts.slice(0, 4);
+  } catch {}
+
   const images = product.media?.filter((m: any) => m.type === 'IMAGE') || [];
   const firstImage = images[0];
 
-  const sizeAttribute = product.variants?.[0]?.attributes?.find(
-    (a: any) => a.attribute?.name?.toLowerCase() === 'size' || a.attribute?.name?.toLowerCase() === 'talla'
-  );
-  const sizes = sizeAttribute?.values?.map((v: any) => v.name) || [];
+  let sizes = product.variants?.map((v: any) => {
+    const sizeAttr = v.attributes?.find(
+      (a: any) => a.attribute?.name?.toLowerCase() === 'size' || a.attribute?.name?.toLowerCase() === 'talla'
+    );
+    if (!sizeAttr) return null;
+    
+    const qty = v.quantityAvailable ?? v.stockQuantity ?? 0;
+    return {
+      name: sizeAttr.values?.[0]?.name,
+      available: qty > 0,
+    };
+  }).filter((s: any) => s && s.name) || [];
 
-  const basePrice = product.pricing?.priceRange?.gross?.amount;
-  const currency = product.pricing?.priceRange?.gross?.currency || 'USD';
+  // Fallback if no sizes are defined in Saleor (to demonstrate the UI)
+  if (sizes.length === 0) {
+    sizes = [
+      { name: 'S', available: true },
+      { name: 'M', available: false },
+      { name: 'L', available: true },
+      { name: 'XL', available: true },
+    ];
+  }
+
+  const basePrice = product.pricing?.priceRange?.start?.gross?.amount;
+  const currency = product.pricing?.priceRange?.start?.gross?.currency || 'USD';
   const currencySymbol = currency === 'USD' ? '$' : currency;
 
   return (
+    <>
     <div className="max-w-site mx-auto px-4 lg:px-8 py-8 lg:py-16">
       {/* Breadcrumb */}
       <nav className="mb-8 text-xs font-display uppercase tracking-wider text-gewalt-text-muted">
@@ -81,40 +111,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         {/* Product images */}
-        <div className="space-y-4">
-          {firstImage ? (
-            <div className="relative aspect-[3/4] bg-gewalt-surface-alt">
-              <Image
-                src={firstImage.url}
-                alt={firstImage.alt || product.name}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          ) : (
-            <div className="aspect-[3/4] bg-gewalt-surface-alt flex items-center justify-center text-gewalt-text-muted">
-              Imagen no disponible
-            </div>
-          )}
-
-          {images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto">
-              {images.map((img: any, i: number) => (
-                <div key={i} className="relative w-20 h-20 flex-shrink-0 bg-gewalt-surface-alt">
-                  <Image
-                    src={img.url}
-                    alt={img.alt || `${product.name} ${i + 1}`}
-                    fill
-                    sizes="80px"
-                    className="object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+        <div>
+          <ProductGallery images={images} productName={product.name} productSlug={product.slug} />
         </div>
 
         {/* Product info */}
@@ -144,16 +142,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
               productSlug={product.slug}
               price={basePrice}
               currency={currencySymbol}
+              imageUrl={firstImage?.url}
             />
           </div>
 
           <div className="mt-8 space-y-3 text-xs text-gewalt-text-muted font-display uppercase tracking-wider">
-            <p>✓ Envíos a todo Ecuador</p>
-            <p>✓ Pago contra entrega</p>
+            <p>✓ Envíos a nivel global</p>
+            <p>✓ Pago seguro por adelantado</p>
             <p>✓ Garantía de calidad</p>
           </div>
         </div>
       </div>
     </div>
+
+      {relatedProducts.length > 0 && (
+        <div className="max-w-site mx-auto px-6 lg:px-16 py-16 border-t border-gewalt-border mt-16">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="font-display text-[0.65rem] tracking-[0.25em] uppercase text-gewalt-text-muted mb-2">Tambien te puede gustar</p>
+              <h2 className="font-serif italic text-[clamp(1.5rem,3vw,2.5rem)] text-gewalt-text leading-none">Mas productos</h2>
+            </div>
+          </div>
+          <ProductGrid products={relatedProducts} />
+        </div>
+      )}
+    </>
   );
 }

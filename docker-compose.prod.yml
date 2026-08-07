@@ -1,5 +1,6 @@
 services:
   saleor:
+    image: gewalt-saleor:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -32,23 +33,24 @@ services:
     ports:
       - "9000:80"
     environment:
-      API_URI: "http://142.93.12.243:8000/graphql/"
-      API_URL: "http://142.93.12.243:8000/graphql/"
+      API_URI: "http://localhost:8000/graphql/"
+      API_URL: "http://localhost:8000/graphql/"
       APP_MOUNT_URI: "/"
       STATIC_URL: "/"
       LOCALE_CODE: "es"
 
   frontend:
+    image: gewalt-frontend:latest
     build:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        NEXT_PUBLIC_API_URL: "http://142.93.12.243:8000/graphql/"
+        NEXT_PUBLIC_API_URL: "http://localhost:8000/graphql/"
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: "http://142.93.12.243:8000/graphql/"
+      NEXT_PUBLIC_API_URL: "http://localhost:8000/graphql/"
 
   db:
     image: docker.io/library/postgres:15-alpine
@@ -72,6 +74,7 @@ services:
       - saleor-cache:/data
 
   celery:
+    image: gewalt-celery:latest
     build:
       context: .
       dockerfile: Dockerfile

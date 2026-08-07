@@ -1,0 +1,21 @@
+services:
+  # Reverso proxy que une frontend + API + media en un solo origen (puerto 8080)
+  gateway:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./gateway.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - gewalt-project_default
+
+  # Ruta el tunnel de Cloudflare hacia el gateway
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --protocol http2 --url http://gateway:8080
+    networks:
+      - gewalt-project_default
+
+networks:
+  gewalt-project_default:
+    external: true

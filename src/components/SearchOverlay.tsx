@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { resolveProductImage } from '@/lib/product-images';
 import { SEARCH_PRODUCTS } from '@/lib/saleor';
 import { saleorClient } from '@/lib/saleor';
 import { MOCK_PRODUCTS } from '@/lib/mock-data';
@@ -141,27 +142,24 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
         {!loading && results.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {results.map((product) => (
+            {results.map((product) => {
+            const searchImg = resolveProductImage(product.thumbnail?.url, product.slug);
+            return (
               <Link
                 key={product.id}
                 href={`/product/${product.slug}`}
                 onClick={onClose}
                 className="group"
               >
-                <div className="aspect-[3/4] bg-gewalt-surface-alt overflow-hidden mb-3">
-                  {product.thumbnail?.url ? (
-                    <Image
-                      src={product.thumbnail.url}
-                      alt={product.thumbnail.alt || product.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gewalt-text-muted text-sm">
-                      Sin imagen
-                    </div>
-                  )}
+                <div className="aspect-[3/4] bg-gewalt-surface-alt overflow-hidden mb-3 relative">
+                  <Image
+                    src={searchImg}
+                    alt={product.thumbnail?.alt || product.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    unoptimized={searchImg.startsWith('http')}
+                  />
                 </div>
                 <h3 className="text-sm font-display uppercase tracking-wider text-gewalt-text group-hover:text-gewalt-primary transition-colors">
                   {product.name}
@@ -172,7 +170,8 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   </p>
                 )}
               </Link>
-            ))}
+            );
+          })}
           </div>
         )}
 

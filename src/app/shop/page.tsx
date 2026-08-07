@@ -5,67 +5,62 @@ import { fetchProducts, fetchCategories } from '@/lib/saleor';
 import { MOCK_PRODUCTS, MOCK_CATEGORIES } from '@/lib/mock-data';
 
 export const metadata: Metadata = {
-  title: 'Shop',
-  description: 'Explora la colección GEWALT — Hoodies, T-Shirts, Long Sleeves y más.',
+  title: 'Shop — GEWALT',
+  description: 'Explora la coleccion GEWALT — Hoodies, T-Shirts, Long Sleeves y mas.',
 };
 
 export default async function ShopPage() {
   let products: any[] = MOCK_PRODUCTS;
   let categories: any[] = MOCK_CATEGORIES;
-  let isUsingMockData = true;
 
   try {
     const result = await fetchProducts(24);
     const fetched = result.edges.map((e) => e.node);
-    if (fetched.length > 0) {
-      products = fetched;
-      isUsingMockData = false;
-    }
-  } catch {
-    // use mock data
-  }
+    if (fetched.length > 0) products = fetched;
+  } catch {}
 
   try {
     const fetched = await fetchCategories();
     if (fetched.length > 0) categories = fetched;
-  } catch {
-    // use mock data
-  }
+  } catch {}
 
   return (
-    <div className="max-w-site mx-auto px-4 lg:px-8 py-12 lg:py-20">
-      <div className="mb-12">
-        <h1 className="font-display text-3xl md:text-4xl uppercase tracking-wider mb-4">Shop</h1>
-
-        {/* Category filter chips */}
-        {categories.length > 0 && (
+    <div className="min-h-screen">
+      {/* Shop header */}
+      <div className="border-b border-gewalt-border">
+        <div className="max-w-site mx-auto px-6 lg:px-16 py-12">
+          <p className="font-display text-[0.65rem] tracking-[0.3em] uppercase text-gewalt-text-muted mb-2">GEWALT Studios</p>
+          <h1 className="font-serif italic text-[clamp(2.5rem,5vw,4rem)] text-gewalt-text leading-none mb-8">Coleccion</h1>
+          {/* Category filters */}
           <div className="flex flex-wrap gap-2">
-            <Link
-              href="/shop"
-              className="px-4 py-2 text-xs font-display uppercase tracking-wider border border-gewalt-border hover:border-gewalt-primary hover:text-gewalt-primary transition-colors"
-            >
+            <Link href="/shop"
+              className="px-5 py-2 text-[0.65rem] font-display uppercase tracking-[0.18em] bg-gewalt-primary text-white transition-colors">
               Todos
             </Link>
             {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/shop/${cat.slug}`}
-                className="px-4 py-2 text-xs font-display uppercase tracking-wider border border-gewalt-border hover:border-gewalt-primary hover:text-gewalt-primary transition-colors"
-              >
+              <Link key={cat.id} href={"/shop/" + cat.slug}
+                className="px-5 py-2 text-[0.65rem] font-display uppercase tracking-[0.18em] border border-gewalt-border text-gewalt-text-muted hover:border-gewalt-primary hover:text-gewalt-primary transition-colors">
                 {cat.name}
               </Link>
             ))}
           </div>
-        )}
+        </div>
       </div>
 
-      {isUsingMockData && (
-        <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 text-yellow-600 text-sm">
-          ⚠️ Modo demo — Conecta Saleor para ver productos reales
-        </div>
-      )}
+      {/* Product count + sort */}
+      <div className="max-w-site mx-auto px-6 lg:px-16 py-5 flex items-center justify-between border-b border-gewalt-border">
+        <p className="font-display text-[0.65rem] tracking-[0.18em] uppercase text-gewalt-text-muted">
+          {products.length} productos
+        </p>
+        <p className="font-display text-[0.65rem] tracking-[0.18em] uppercase text-gewalt-text-muted">
+          Coleccion 2026
+        </p>
+      </div>
 
-      <ProductGrid products={products} />
+      {/* Grid */}
+      <div className="max-w-site mx-auto px-6 lg:px-16 py-12">
+        <ProductGrid products={products} />
+      </div>
     </div>
   );
 }
