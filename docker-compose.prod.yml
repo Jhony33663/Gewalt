@@ -1,3 +1,9 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "3"
+
 services:
   saleor:
     image: gewalt-saleor:latest
@@ -5,6 +11,7 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    logging: *default-logging
     env_file:
       - .env
     depends_on:
@@ -14,30 +21,40 @@ services:
         condition: service_started
     volumes:
       - saleor-media:/app/media
-    command: sh -c "python manage.py migrate --no-input && uvicorn saleor.asgi:application --host=0.0.0.0 --port=8000 --workers=2 --lifespan=auto --ws=none --no-server-header --no-access-log --timeout-keep-alive=35 --timeout-graceful-shutdown=30 --limit-max-requests=10000"
+    mem_limit: 1536m
+    pids_limit: 1024
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health/').status==200 else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    command: sh -c "export RSA_PRIVATE_KEY=\"\$(printf '%s' \"\$RSA_PRIVATE_KEY_B64\" | base64 -d)\"; python manage.py migrate --no-input && uvicorn saleor.asgi:application --host=0.0.0.0 --port=8000 --workers=2 --lifespan=auto --ws=none --no-server-header --no-access-log --timeout-keep-alive=35 --timeout-graceful-shutdown=30 --limit-max-requests=10000"
 
   api-proxy:
     image: nginx:alpine
     restart: unless-stopped
-    ports:
-      - "8000:8000"
+    logging: *default-logging
     volumes:
       - ./.worktree-container/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - saleor-media:/app/media
+      - saleor-media:/app/media:ro
     depends_on:
       - saleor
+    mem_limit: 128m
+    pids_limit: 256
 
   dashboard:
     image: ghcr.io/saleor/saleor-dashboard:3.23
     restart: unless-stopped
-    ports:
-      - "9000:80"
+    logging: *default-logging
     environment:
-      API_URI: "http://localhost:8000/graphql/"
-      API_URL: "http://localhost:8000/graphql/"
-      APP_MOUNT_URI: "/"
-      STATIC_URL: "/"
+      API_URI: "https://gewaltoficial.shop/graphql/"
+      API_URL: "https://gewaltoficial.shop/graphql/"
+      APP_MOUNT_URI: "/dashboard/"
+      STATIC_URL: "/dashboard/"
       LOCALE_CODE: "es"
+    mem_limit: 1024m
+    pids_limit: 256
 
   frontend:
     image: gewalt-frontend:latest
@@ -45,46 +62,102 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        NEXT_PUBLIC_API_URL: "http://localhost:8000/graphql/"
+        NEXT_PUBLIC_API_URL: "https://gewaltoficial.shop/graphql/"
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    logging: *default-logging
     environment:
-      NEXT_PUBLIC_API_URL: "http://localhost:8000/graphql/"
+      NEXT_PUBLIC_API_URL: "https://gewaltoficial.shop/graphql/"
+      NEXT_PUBLIC_SITE_URL: "https://gewaltoficial.shop"
+      NEXT_PUBLIC_SITE_NAME: "GEWALT"
+      INTERNAL_SALEOR_API_URL: "http://api-proxy:8000"
+    depends_on:
+      - api-proxy
+    mem_limit: 512m
+    pids_limit: 256
+
+  caddy:
+    image: docker.io/library/caddy:2-alpine
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - frontend
+      - api-proxy
+      - dashboard
+    mem_limit: 128m
+    pids_limit: 256
 
   db:
     image: docker.io/library/postgres:15-alpine
     restart: unless-stopped
+    logging: *default-logging
     volumes:
       - saleor-db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: saleor
       POSTGRES_PASSWORD: saleor
       POSTGRES_DB: saleor
+    command: >
+      postgres
+      -c shared_buffers=128MB
+      -c effective_cache_size=384MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
+      -c max_connections=100
+      -c fsync=on
+      -c synchronous_commit=off
+      -c checkpoint_timeout=15min
+      -c max_wal_size=1GB
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U saleor"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
+    mem_limit: 512m
+    pids_limit: 256
 
   cache:
     image: docker.io/valkey/valkey:8.1-alpine
     restart: unless-stopped
+    logging: *default-logging
     volumes:
       - saleor-cache:/data
+    command: valkey-server --maxmemory 192mb --maxmemory-policy allkeys-lru --appendonly yes
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    mem_limit: 256m
+    pids_limit: 256
 
   celery:
-    image: gewalt-celery:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: gewalt-saleor:latest
     restart: unless-stopped
+    logging: *default-logging
     env_file:
       - .env
     depends_on:
       - db
       - cache
-    command: celery -A saleor --app=saleor.celeryconf:app worker --loglevel=info -B
+    command: sh -c "export RSA_PRIVATE_KEY=\"\$(printf '%s' \"\$RSA_PRIVATE_KEY_B64\" | base64 -d)\"; celery -A saleor --app=saleor.celeryconf:app worker --loglevel=warning --concurrency=2 --max-tasks-per-child=100 --max-memory-per-child=400000 -B"
+    mem_limit: 768m
+    pids_limit: 512
+
+  mailpit:
+    image: docker.io/axllent/mailpit
+    restart: unless-stopped
+    logging: *default-logging
+    mem_limit: 128m
+    pids_limit: 128
 
 volumes:
   saleor-db:
@@ -92,4 +165,8 @@ volumes:
   saleor-cache:
     driver: local
   saleor-media:
+    driver: local
+  caddy-data:
+    driver: local
+  caddy-config:
     driver: local

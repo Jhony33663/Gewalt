@@ -1,0 +1,31 @@
+gewaltoficial.shop {
+	encode gzip zstd
+
+	handle /graphql/* {
+		reverse_proxy api-proxy:8000 {
+			header_up Host {host}
+		}
+	}
+
+	handle /media/* {
+		reverse_proxy api-proxy:8000 {
+			header_up Host {host}
+		}
+	}
+
+	handle /dashboard/* {
+		reverse_proxy dashboard:80 {
+			header_up Host {host}
+		}
+	}
+
+	handle {
+		reverse_proxy frontend:3000 {
+			header_up Host {host}
+		}
+	}
+}
+
+www.gewaltoficial.shop {
+	redir https://gewaltoficial.shop{uri} permanent
+}
