@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
-import { resolveProductImage } from '@/lib/product-images';
 import { ShoppingBag } from 'lucide-react';
 
 interface SizeSelectorProps {
@@ -25,7 +24,6 @@ export default function SizeSelector({
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [triedSubmit, setTriedSubmit] = useState(false);
   const { addItem } = useCart();
-  const resolvedImage = resolveProductImage(imageUrl, productSlug);
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -40,7 +38,7 @@ export default function SizeSelector({
       price,
       currency,
       quantity: 1,
-      imageUrl: resolvedImage,
+      imageUrl,
     });
     setTriedSubmit(false);
   };
@@ -57,7 +55,7 @@ export default function SizeSelector({
             price,
             currency,
             quantity: 1,
-            imageUrl: resolvedImage,
+            imageUrl,
           });
         }}
         className="flex items-center justify-center gap-3 w-full py-4 px-6 bg-gewalt-primary hover:bg-black text-white font-display font-bold text-sm uppercase tracking-wider transition-colors duration-200 rounded-none"

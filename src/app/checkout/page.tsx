@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
-import { resolveProductImage } from '@/lib/product-images';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
@@ -77,9 +76,18 @@ export default function CheckoutPage() {
             <textarea name="referencia" value={formData.referencia} onChange={handleChange} className="w-full border border-gewalt-border p-3 focus:border-gewalt-primary outline-none transition-colors min-h-[100px]" />
           </div>
 
-          <button type="submit" className="w-full bg-[#25D366] text-white py-4 font-display font-bold uppercase tracking-widest hover:bg-[#1ea952] transition-colors mt-8">
-            Completar por WhatsApp
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 mt-8">
+            <button type="submit" className="flex-1 bg-[#25D366] text-white py-4 font-display font-bold uppercase tracking-widest hover:bg-[#1ea952] transition-colors">
+              Completar por WhatsApp
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push('/shop')}
+              className="py-4 px-6 border border-gewalt-border text-gewalt-text font-display uppercase tracking-widest text-xs font-semibold hover:bg-gewalt-primary hover:text-white transition-colors"
+            >
+              Seguir Comprando
+            </button>
+          </div>
         </form>
       </div>
 
@@ -91,7 +99,7 @@ export default function CheckoutPage() {
               <div key={item.id} className="flex justify-between items-center text-sm">
                 <div className="flex items-center gap-4">
                   {item.imageUrl && (
-                    <img src={resolveProductImage(item.imageUrl, item.slug)} alt={item.name} className="w-12 h-16 object-cover" />
+                    <img src={item.imageUrl} alt={item.name} className="w-12 h-16 object-cover" />
                   )}
                   <div>
                     <p className="font-display uppercase tracking-wider">{item.name}</p>

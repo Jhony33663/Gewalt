@@ -62,28 +62,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = product.media?.filter((m: any) => m.type === 'IMAGE') || [];
   const firstImage = images[0];
 
-  let sizes = product.variants?.map((v: any) => {
+  const sizes = product.variants?.map((v: any) => {
     const sizeAttr = v.attributes?.find(
       (a: any) => a.attribute?.name?.toLowerCase() === 'size' || a.attribute?.name?.toLowerCase() === 'talla'
     );
-    if (!sizeAttr) return null;
-    
     const qty = v.quantityAvailable ?? v.stockQuantity ?? 0;
     return {
-      name: sizeAttr.values?.[0]?.name,
+      name: sizeAttr?.values?.[0]?.name || v.name,
       available: qty > 0,
     };
   }).filter((s: any) => s && s.name) || [];
-
-  // Fallback if no sizes are defined in Saleor (to demonstrate the UI)
-  if (sizes.length === 0) {
-    sizes = [
-      { name: 'S', available: true },
-      { name: 'M', available: false },
-      { name: 'L', available: true },
-      { name: 'XL', available: true },
-    ];
-  }
 
   const basePrice = product.pricing?.priceRange?.start?.gross?.amount;
   const currency = product.pricing?.priceRange?.start?.gross?.currency || 'USD';

@@ -18,7 +18,7 @@ function pickBySlug(slug: string): string {
 
 export function resolveProductImage(url: string | null | undefined, slug: string): string {
   if (url && typeof url === 'string' && url.trim() !== '') {
-    let cleanUrl = url.replace(/^https?:\/\/(142\.93\.12\.243|api-proxy|saleor|localhost):8000/, '');
+    let cleanUrl = url.replace(/http:\/\/(142\.93\.12\.243|api-proxy|saleor):8000/g, 'http://localhost:8000');
     return cleanUrl;
   }
   return pickBySlug(slug);

@@ -4,10 +4,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { resolveProductImage } from '@/lib/product-images';
 import { useCart } from '@/context/CartContext';
+
 interface ProductCardProps {
   name: string; slug: string; thumbnail?: string; thumbnailAlt?: string;
   hoverThumbnail?: string; price?: number; currency?: string; tag?: string;
 }
+
 export default function ProductCard({ name, slug, thumbnail, thumbnailAlt, hoverThumbnail, price, currency = '$', tag }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const [quickAdd, setQuickAdd] = useState(false);
@@ -17,19 +19,23 @@ export default function ProductCard({ name, slug, thumbnail, thumbnailAlt, hover
   const isExternal = img.startsWith('http');
   const isHoverExternal = hoverImg ? hoverImg.startsWith('http') : false;
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-  const handleQuickAdd = (size: string) => {
+
+  const handleQuickAdd = (e: React.MouseEvent, size: string) => {
+    e.preventDefault();
+    e.stopPropagation();
     addItem({
       productId: slug,
       name,
       slug,
       size,
-      price: price ?? 0,
-      currency: currency || '$',
+      price: price || 0,
+      currency,
       quantity: 1,
       imageUrl: img,
     });
     setQuickAdd(false);
   };
+
   return (
     <div className="group relative" onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); setQuickAdd(false); }}>
       <Link href={"/product/" + slug} className="block">
@@ -48,7 +54,15 @@ export default function ProductCard({ name, slug, thumbnail, thumbnailAlt, hover
               <button onClick={(e) => { e.preventDefault(); setQuickAdd(true); }} className="w-full py-3 text-[0.65rem] font-display font-semibold tracking-[0.18em] uppercase text-gewalt-text hover:text-gewalt-primary transition-colors">Agregar rapido</button>
             ) : (
               <div className="flex items-center justify-center gap-1.5 py-3 px-3 flex-wrap">
-                {sizes.map((s) => <button key={s} onClick={(e) => { e.preventDefault(); handleQuickAdd(s); }} className="px-2 py-1 text-[0.6rem] font-display tracking-wider uppercase border border-gewalt-border hover:bg-gewalt-primary hover:text-white hover:border-gewalt-primary transition-all duration-150 min-w-[2rem]">{s}</button>)}
+                {sizes.map((s) => (
+                  <button 
+                    key={s} 
+                    onClick={(e) => handleQuickAdd(e, s)} 
+                    className="px-2 py-1 text-[0.6rem] font-display tracking-wider uppercase border border-gewalt-border hover:bg-gewalt-primary hover:text-white hover:border-gewalt-primary transition-all duration-150 min-w-[2rem]"
+                  >
+                    {s}
+                  </button>
+                ))}
               </div>
             )}
           </div>

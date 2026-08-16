@@ -1,7 +1,6 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
-import { resolveProductImage } from '@/lib/product-images';
 import { X, Trash2, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 
@@ -27,16 +26,22 @@ export default function CartDrawer() {
 
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {items.length === 0 ? (
-            <div className="text-center text-gewalt-text-muted mt-10">
+            <div className="text-center text-gewalt-text-muted mt-10 flex flex-col items-center justify-center">
               <ShoppingBag size={48} className="mx-auto mb-4 opacity-20" />
-              <p className="font-display tracking-widest uppercase text-sm">Tu carrito está vacío</p>
+              <p className="font-display tracking-widest uppercase text-sm mb-6">Tu carrito está vacío</p>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="px-6 py-3 border border-gewalt-primary text-gewalt-primary font-display uppercase tracking-widest text-xs font-semibold hover:bg-gewalt-primary hover:text-white transition-colors"
+              >
+                Seguir Comprando
+              </button>
             </div>
           ) : (
             items.map((item) => (
               <div key={item.id} className="flex gap-4 border-b border-gewalt-border pb-6">
                 {item.imageUrl ? (
                   <div className="w-20 h-24 bg-gray-100 flex-shrink-0 relative overflow-hidden">
-                    <img src={resolveProductImage(item.imageUrl, item.slug)} alt={item.name} className="object-cover w-full h-full" />
+                    <img src={item.imageUrl} alt={item.name} className="object-cover w-full h-full" />
                   </div>
                 ) : (
                   <div className="w-20 h-24 bg-gray-100 flex-shrink-0" />
@@ -75,8 +80,8 @@ export default function CartDrawer() {
         </div>
 
         {items.length > 0 && (
-          <div className="p-6 border-t border-gewalt-border bg-gray-50">
-            <div className="flex justify-between items-center mb-6">
+          <div className="p-6 border-t border-gewalt-border bg-gray-50 space-y-3">
+            <div className="flex justify-between items-center mb-4">
               <span className="font-display tracking-wider uppercase text-sm">Total</span>
               <span className="font-display text-xl">${totalPrice.toFixed(2)}</span>
             </div>
@@ -88,6 +93,13 @@ export default function CartDrawer() {
             >
               Completar Pedido
             </Link>
+
+            <button
+              onClick={() => setIsCartOpen(false)}
+              className="block w-full py-3.5 text-center border border-gewalt-primary text-gewalt-primary font-display uppercase tracking-widest text-xs font-semibold hover:bg-gewalt-primary hover:text-white transition-colors"
+            >
+              Seguir Comprando
+            </button>
           </div>
         )}
       </div>

@@ -3,12 +3,6 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
   output: 'standalone',
-  async rewrites() {
-    const apiBase = process.env.INTERNAL_SALEOR_API_URL || 'http://api-proxy:8000';
-    return [
-      { source: '/media/:path*', destination: `${apiBase}/media/:path*` },
-    ];
-  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },

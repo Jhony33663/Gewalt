@@ -6,14 +6,21 @@ fetch('http://localhost:8000/graphql/', {
       products(first: 10, channel: "default-channel") {
         edges {
           node {
+            id
             name
             slug
             variants {
               id
               name
+              sku
+              quantityAvailable
               attributes {
-                attribute { name }
-                values { name }
+                attribute { name slug }
+                values { name slug }
+              }
+              stocks {
+                quantity
+                warehouse { name }
               }
             }
           }
