@@ -91,11 +91,6 @@ export const GET_PRODUCT_DETAIL = gql`
           attribute { name }
           values { name }
         }
-        pricing {
-          price {
-            gross { amount currency }
-          }
-        }
       }
       category {
         name
