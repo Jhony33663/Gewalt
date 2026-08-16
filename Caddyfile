@@ -13,6 +13,12 @@ gewaltoficial.shop {
 		}
 	}
 
+	handle /thumbnail/* {
+		reverse_proxy api-proxy:8000 {
+			header_up Host {host}
+		}
+	}
+
 	handle /dashboard/* {
 		reverse_proxy dashboard:80 {
 			header_up Host {host}
