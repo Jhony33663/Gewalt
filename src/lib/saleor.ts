@@ -1,10 +1,14 @@
 import { GraphQLClient, gql } from 'graphql-request';
 
 function getApiUrl() {
+  let url = process.env.NEXT_PUBLIC_SALEOR_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/graphql/';
   if (typeof window === 'undefined') {
-    return process.env.INTERNAL_SALEOR_API_URL || 'http://api-proxy:8000/graphql/';
+    url = process.env.INTERNAL_SALEOR_API_URL || 'http://api-proxy:8000/graphql/';
   }
-  return process.env.NEXT_PUBLIC_SALEOR_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/graphql/';
+  if (!url.endsWith('/graphql/')) {
+    url = url.replace(/\/+$/, '') + '/graphql/';
+  }
+  return url;
 }
 
 export function getSaleorClient() {
