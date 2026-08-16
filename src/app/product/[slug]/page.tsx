@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchProductDetail } from '@/lib/saleor';
+import { fetchProductDetail, parseEditorJsToHtml } from '@/lib/saleor';
 import { notFound } from 'next/navigation';
 import { MOCK_PRODUCT_DETAIL } from '@/lib/mock-data';
 import SizeSelector from '@/components/SizeSelector';
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     if (!product) return { title: 'Producto no encontrado' };
     return {
       title: product.name,
-      description: product.description?.replace(/<[^>]*>/g, '').slice(0, 160),
+      description: parseEditorJsToHtml(product.description || '').replace(/<[^>]*>/g, '').slice(0, 160),
       openGraph: {
         title: product.name,
         images: product.media?.[0]?.url ? [{ url: product.media[0].url }] : [],
@@ -118,7 +118,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {product.description && (
             <div
               className="text-gewalt-text-muted text-sm leading-relaxed mb-8 prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{ __html: product.description }}
+              dangerouslySetInnerHTML={{ __html: parseEditorJsToHtml(product.description) }}
             />
           )}
 

@@ -173,6 +173,29 @@ export const SEARCH_PRODUCTS = gql`
   }
 `;
 
+export function parseEditorJsToHtml(raw: string): string {
+  if (!raw) return '';
+  if (!raw.startsWith('{')) return raw;
+  try {
+    const doc = JSON.parse(raw);
+    if (!doc.blocks || !Array.isArray(doc.blocks)) return raw;
+    return doc.blocks.map((b: any) => {
+      if (b.type === 'paragraph') return `<p>${b.data?.text || ''}</p>`;
+      if (b.type === 'header') {
+        const tag = `h${b.data?.level || 2}`;
+        return `<${tag}>${b.data?.text || ''}</${tag}>`;
+      }
+      if (b.type === 'list') {
+        const items = (b.data?.items || []).map((i: string) => `<li>${i}</li>`).join('');
+        return b.data?.style === 'ordered' ? `<ol>${items}</ol>` : `<ul>${items}</ul>`;
+      }
+      return `<p>${b.data?.text || JSON.stringify(b.data)}</p>`;
+    }).join('');
+  } catch {
+    return raw;
+  }
+}
+
 // ─── Helpers ─────────────────────────────────────────────
 
 const CHANNEL = 'default-channel';
