@@ -18,8 +18,12 @@ function pickBySlug(slug: string): string {
 
 export function resolveProductImage(url: string | null | undefined, slug: string): string {
   if (url && typeof url === 'string' && url.trim() !== '') {
-    let cleanUrl = url.replace(/http:\/\/(142\.93\.12\.243|api-proxy|saleor):8000/g, 'http://localhost:8000');
-    return cleanUrl;
+    if (url.includes('/media/')) {
+      const mediaPath = '/media/' + url.split('/media/')[1];
+      const mediaHost = process.env.NEXT_PUBLIC_MEDIA_URL || '';
+      return `${mediaHost}${mediaPath}`;
+    }
+    return url;
   }
   return pickBySlug(slug);
 }

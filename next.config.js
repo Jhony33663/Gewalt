@@ -13,6 +13,8 @@ const nextConfig = {
       { protocol: 'http', hostname: '127.0.0.1' },
       { protocol: 'http', hostname: '142.93.12.243' },
       { protocol: 'http', hostname: '0.0.0.0' },
+      { protocol: 'https', hostname: 'gewaltoficial.shop' },
+      { protocol: 'https', hostname: '**.gewaltoficial.shop' },
       { protocol: 'https', hostname: '**.r2.cloudflarestorage.com' },
       { protocol: 'https', hostname: '**.s3.amazonaws.com' },
     ],
