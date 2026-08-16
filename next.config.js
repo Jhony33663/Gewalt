@@ -6,6 +6,14 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/media/:path*',
+        destination: `${process.env.INTERNAL_SALEOR_API_URL || 'http://api-proxy:8000'}/media/:path*`,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**.saleor.cloud' },
