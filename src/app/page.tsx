@@ -18,7 +18,7 @@ export default async function HomePage() {
       {/* HERO — editorial full height */}
       <section className="relative w-full h-[95vh] min-h-[600px] flex items-end overflow-hidden bg-[#111]">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
-        <video className="absolute inset-0 z-0 w-full h-full object-cover opacity-80" autoPlay muted loop playsInline preload="metadata" poster="/bg-hero-main.jpg">
+        <video className="absolute inset-0 z-0 w-full h-full object-cover opacity-80" autoPlay muted loop playsInline preload="metadata">
           <source src="/hero.mp4" type="video/mp4" />
         </video>
 
