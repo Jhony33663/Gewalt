@@ -10,7 +10,11 @@ export default function Footer() {
           <div className="md:col-span-2">
             <span className="font-serif italic text-xl text-green-800">Gewalt</span>
             <p className="text-gewalt-text-muted text-sm leading-relaxed mt-4 max-w-[280px]">
-              Ropa urbana para quienes viven la calle. Calidad premium, precios justos, envíos a todo Ecuador.
+              Nació de no encontrar lo que queríamos vestir.
+              <br />
+              Ahora hacemos lo que queremos ponernos.
+              <br />
+              Envíos a todo el mundo.
             </p>
           </div>
 
@@ -22,7 +26,7 @@ export default function Footer() {
             <ul className="space-y-1 text-sm">
               <li><Link href="/shop" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">Shop</Link></li>
               <li><Link href="/drops" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">Drops</Link></li>
-              <li><Link href="/about" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">Manifiesto</Link></li>
+              <li><Link href="/about" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">Nuestra Historia</Link></li>
               <li><Link href="/help/faq" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">FAQ</Link></li>
               <li><Link href="/help/shipping" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">Envíos</Link></li>
               <li><Link href="/help/size-guide" className="text-gewalt-text-muted hover:text-green-700 transition-colors font-light">Guía de Tallas</Link></li>
